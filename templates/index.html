@@ -3,170 +3,1383 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EKS-Project-Flask-MySql App</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CloudOps Hub | EKS Deployment</title>
+
     <style>
-        body, h1, p, form, input {
+
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #080b12;
+            --panel: #10151f;
+            --panel-light: #151c28;
+            --border: #202a3a;
+            --text: #f4f7fb;
+            --muted: #8d99aa;
+            --blue: #4f8cff;
+            --cyan: #22d3ee;
+            --green: #22c55e;
+            --purple: #9b7cff;
+            --orange: #f59e0b;
         }
 
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(79, 140, 255, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(155, 124, 255, 0.10),
+                    transparent 28%
+                ),
+                var(--bg);
+
+            color: var(--text);
             min-height: 100vh;
-            overflow: hidden;
         }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            margin: 20px auto;
-            padding: 30px;
-            background-colP0+r\P0+r\or: #1e1e1e;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        .app {
+            width: min(1180px, 92%);
+            margin: auto;
+            padding: 28px 0 50px;
         }
 
-        .container:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            transform: translateY(-5px);
+        /* ------------------------------------------------
+           NAVBAR
+        ------------------------------------------------ */
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 55px;
         }
 
-        h1 {
-            color: #ff9800;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-            text-align: center;
-            font-size: 1.8rem;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        p {
-            color: #ccc;
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--purple)
+                );
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 16px;
+            letter-spacing: 0.4px;
+        }
+
+        .brand-text span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            background: rgba(34, 197, 94, 0.08);
+
+            color: #7df2a4;
+
+            padding: 8px 14px;
+            border-radius: 30px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 5px rgba(34, 197, 94, 0.08);
+        }
+
+        /* ------------------------------------------------
+           HERO
+        ------------------------------------------------ */
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.4fr 0.6fr;
+            gap: 30px;
+            align-items: center;
+
+            margin-bottom: 45px;
+        }
+
+        .eyebrow {
+            color: var(--cyan);
+            font-size: 13px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+
             margin-bottom: 15px;
-            font-size: 1rem;
         }
 
-        form {
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 68px);
+            line-height: 0.98;
+            letter-spacing: -3px;
+
+            max-width: 750px;
+        }
+
+        .gradient-text {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #7db1ff,
+                    #a78bfa
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            max-width: 670px;
+
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.7;
+
+            margin-top: 23px;
+        }
+
+        .hero-card {
+            border: 1px solid var(--border);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(79, 140, 255, 0.12),
+                    rgba(155, 124, 255, 0.06)
+                ),
+                var(--panel);
+
+            border-radius: 22px;
+            padding: 25px;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.25);
+        }
+
+        .hero-card-label {
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cluster-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 8px 0 22px;
+        }
+
+        .cluster-line {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 18px;
+        }
+
+        .cluster-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+
+            font-size: 13px;
+        }
+
+        .cluster-row span:first-child {
+            color: var(--muted);
+        }
+
+        .healthy {
+            color: #69e995;
+            font-weight: 700;
+        }
+
+        /* ------------------------------------------------
+           ARCHITECTURE
+        ------------------------------------------------ */
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+
+            margin-bottom: 18px;
+        }
+
+        .section-heading h2 {
+            font-size: 22px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .architecture {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 48px;
+        }
+
+        .service-card {
+            position: relative;
+
+            background: var(--panel);
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+            padding: 22px;
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: #34445d;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 11px;
+
+            background: var(--panel-light);
+
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .service-card h3 {
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .service-card p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .service-status {
+            margin-top: 16px;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #75e69b;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ------------------------------------------------
+           DASHBOARD
+        ------------------------------------------------ */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 18px;
+
+            margin-bottom: 45px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 23px;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+        }
+
+        .panel-header span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* ------------------------------------------------
+           PIPELINE
+        ------------------------------------------------ */
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 5px;
+        }
+
+        .pipeline-step {
+            text-align: center;
+            flex: 1;
+        }
+
+        .pipeline-icon {
+            width: 42px;
+            height: 42px;
+
+            margin: auto;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(34, 197, 94, 0.10);
+
+            border:
+                1px solid rgba(34, 197, 94, 0.25);
+
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .pipeline-step strong {
+            display: block;
+
+            font-size: 11px;
+            margin-top: 9px;
+        }
+
+        .pipeline-step span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .pipeline-line {
+            height: 1px;
+            flex: 0.5;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--green),
+                    var(--blue)
+                );
+        }
+
+        /* ------------------------------------------------
+           STATS
+        ------------------------------------------------ */
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .stat {
+            background: var(--panel-light);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            padding: 17px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 7px;
+        }
+
+        .stat-small {
+            color: #6fe99a;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        /* ------------------------------------------------
+           COMMENTS
+        ------------------------------------------------ */
+
+        .comments-section {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 18px;
+        }
+
+        .comment-form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 13px;
         }
 
-        input[type="text"] {
-            padding: 12px;
-            border: 1px solid #333;
-            background-color: #2c2c2c;
-            color: #fff;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        .comment-form label {
+            color: var(--muted);
+            font-size: 12px;
         }
 
-        input[type="text"]:hover, input[type="text"]:focus {
-            border-color: #ff9800;
-            box-shadow: 0 0 8px rgba(255, 152, 0, 0.25);
+        textarea {
+            width: 100%;
+            min-height: 130px;
+
+            resize: vertical;
+
+            background: #0b1018;
+            color: var(--text);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 14px;
+
+            font:
+                inherit;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
-        input[type="submit"] {
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #ff9800, #e65100);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
+        textarea:focus {
+            border-color: var(--blue);
+
+            box-shadow:
+                0 0 0 3px rgba(79, 140, 255, 0.10);
+        }
+
+        .submit-button {
+            border: 0;
+
+            border-radius: 10px;
+
+            padding: 13px 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--purple)
+                );
+
+            color: white;
+
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease, box-shP0+r\P0+r\P0+r\P0+r\P0+r\adow 0.3s ease;
-            font-size: 16px;
+
+            transition:
+                transform 0.2s ease,
+                opacity 0.2s ease;
         }
 
-        input[type="submit"]:hover {
-            background: linear-gradient(135deg, #e65100, #ff9800);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .submit-button:hover {
             transform: translateY(-2px);
         }
 
-        input[type="submit"]:active {
-            transform: translateY(0);
-            box-shadow: none;
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .messages {
+            max-height: 300px;
+            overflow-y: auto;
+
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            background: var(--panel-light);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 14px 16px;
+
+            animation:
+                slideIn 0.25s ease;
+        }
+
+        .message-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+        }
+
+        .message-label {
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .message-time {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .message-body {
+            color: #dce4ee;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            color: var(--muted);
+            text-align: center;
+            padding: 30px 10px;
+            font-size: 13px;
+        }
+
+        /* ------------------------------------------------
+           FOOTER
+        ------------------------------------------------ */
+
+        footer {
+            border-top: 1px solid var(--border);
+
+            padding-top: 20px;
+
+            display: flex;
+            justify-content: space-between;
+
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        footer strong {
+            color: #d7dfeb;
+        }
+
+        /* ------------------------------------------------
+           ANIMATION
+        ------------------------------------------------ */
+
+        @keyframes slideIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        /* ------------------------------------------------
+           RESPONSIVE
+        ------------------------------------------------ */
+
+        @media (max-width: 900px) {
+
+            .hero,
+            .dashboard,
+            .comments-section {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
         }
 
         @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
+
+            .app {
+                width: 94%;
             }
 
-            h1 {
-                font-size: 1.5rem;
+            .navbar {
+                margin-bottom: 35px;
             }
 
-            p {
-                font-size: 0.9rem;
+            .hero h1 {
+                font-size: 42px;
             }
 
-            input[type="text"], input[type="submit"] {
-                font-size: 14px;
+            .architecture {
+                grid-template-columns: 1fr;
             }
+
+            .pipeline {
+                flex-wrap: wrap;
+            }
+
+            .pipeline-line {
+                display: none;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 7px;
+            }
+
         }
+
     </style>
 </head>
 
+
 <body>
-    <div class="container" align="center">
-        <h1>Congratulations!! DevOps Projects Successfully Completed!!<br><br>This is your Reyaz Sir!!   Start Commenting now !!</h1>
-		<br><align=center>
-		<img src="{{url_for('static', filename='sir.jpg')}}" align="middle" width="300" height="300" />
-		
-		<h2>Reyaz Shaik is an experienced AWS Solutions Architect with proven track record in
-		Solution Design for Cloud Technologies in IT infrastructure functions with DevOps methodolgies . </h2>
-        <div class="messages">
-            {% for message in messages %}
-                <p>{{ message[0] }}</p>
-            {% endfor %}
+
+<div class="app">
+
+    <!-- NAVIGATION -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                C
+            </div>
+
+            <div class="brand-text">
+
+                <strong>CloudOps Hub</strong>
+
+                <span>
+                    Kubernetes Deployment Dashboard
+                </span>
+
+            </div>
+
         </div>
 
-        <form id="messageForm">
-            <input type="text" name="new_message" placeholder="Enter a new message">
-            <input type="submit" value="Comment">
-        </form>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#messageForm").on("submit", function(event) {
-                event.preventDefault(); // Prevent the form from submitting the traditional way
+        <div class="status-pill">
 
-                $.ajax({
-                    url: "/submit",
-                    type: "POST",
-                    data: {
-                        new_message: $("input[name='new_message']").val()
+            <span class="status-dot"></span>
+
+            All Systems Operational
+
+        </div>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div>
+
+            <div class="eyebrow">
+                Production Environment
+            </div>
+
+            <h1>
+                Your application,
+                <span class="gradient-text">
+                    running on EKS.
+                </span>
+            </h1>
+
+            <p>
+                A containerized Flask application connected to
+                MySQL and deployed through Docker and Amazon
+                Elastic Kubernetes Service.
+            </p>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="hero-card-label">
+                Kubernetes Cluster
+            </div>
+
+            <div class="cluster-name">
+                pragya-cluster
+            </div>
+
+            <div class="cluster-line"></div>
+
+            <div class="cluster-row">
+                <span>Region</span>
+                <strong>ap-south-1</strong>
+            </div>
+
+            <div class="cluster-row">
+                <span>Nodes</span>
+                <strong>2 Ready</strong>
+            </div>
+
+            <div class="cluster-row">
+                <span>Application</span>
+                <strong class="healthy">
+                    ● Healthy
+                </strong>
+            </div>
+
+            <div class="cluster-row">
+                <span>Database</span>
+                <strong class="healthy">
+                    ● Connected
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ARCHITECTURE -->
+
+    <section>
+
+        <div class="section-heading">
+
+            <div>
+                <h2>Application Architecture</h2>
+            </div>
+
+            <p>
+                Containerized two-tier deployment
+            </p>
+
+        </div>
+
+
+        <div class="architecture">
+
+            <div class="service-card">
+
+                <div class="service-icon">
+                    ☁
+                </div>
+
+                <h3>Amazon EKS</h3>
+
+                <p>
+                    Managed Kubernetes cluster running
+                    the application workload.
+                </p>
+
+                <div class="service-status">
+                    ● RUNNING
+                </div>
+
+            </div>
+
+
+            <div class="service-card">
+
+                <div class="service-icon">
+                    ◈
+                </div>
+
+                <h3>Flask API</h3>
+
+                <p>
+                    Python web application serving the
+                    dashboard and API endpoints.
+                </p>
+
+                <div class="service-status">
+                    ● RUNNING
+                </div>
+
+            </div>
+
+
+            <div class="service-card">
+
+                <div class="service-icon">
+                    ◉
+                </div>
+
+                <h3>MySQL</h3>
+
+                <p>
+                    Persistent relational database storing
+                    application messages.
+                </p>
+
+                <div class="service-status">
+                    ● CONNECTED
+                </div>
+
+            </div>
+
+
+            <div class="service-card">
+
+                <div class="service-icon">
+                    ◇
+                </div>
+
+                <h3>Docker</h3>
+
+                <p>
+                    Application packaged as a container
+                    image for Kubernetes deployment.
+                </p>
+
+                <div class="service-status">
+                    ● DEPLOYED
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DEPLOYMENT DASHBOARD -->
+
+    <section class="dashboard">
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>Deployment Pipeline</h2>
+
+                <span>
+                    LIVE ENVIRONMENT
+                </span>
+
+            </div>
+
+
+            <div class="pipeline">
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-icon">
+                        ✓
+                    </div>
+
+                    <strong>Source</strong>
+
+                    <span>GitHub</span>
+
+                </div>
+
+
+                <div class="pipeline-line"></div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-icon">
+                        ✓
+                    </div>
+
+                    <strong>Build</strong>
+
+                    <span>Docker</span>
+
+                </div>
+
+
+                <div class="pipeline-line"></div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-icon">
+                        ✓
+                    </div>
+
+                    <strong>Deploy</strong>
+
+                    <span>Kubernetes</span>
+
+                </div>
+
+
+                <div class="pipeline-line"></div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-icon">
+                        ✓
+                    </div>
+
+                    <strong>Serve</strong>
+
+                    <span>ELB</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>Runtime Status</h2>
+
+                <span>
+                    EKS
+                </span>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Kubernetes Nodes
+                    </div>
+
+                    <div class="stat-value">
+                        02
+                    </div>
+
+                    <div class="stat-small">
+                        ● Ready
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Application Pods
+                    </div>
+
+                    <div class="stat-value">
+                        01
+                    </div>
+
+                    <div class="stat-small">
+                        ● Running
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Database Pods
+                    </div>
+
+                    <div class="stat-value">
+                        01
+                    </div>
+
+                    <div class="stat-small">
+                        ● Running
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Service Type
+                    </div>
+
+                    <div class="stat-value">
+                        ELB
+                    </div>
+
+                    <div class="stat-small">
+                        ● Available
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TEAM UPDATES -->
+
+    <section class="comments-section">
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>Deployment Update</h2>
+
+                <span>
+                    MYSQL BACKED
+                </span>
+
+            </div>
+
+
+            <form
+                id="messageForm"
+                class="comment-form"
+            >
+
+                <label for="message">
+                    Add a note about this deployment
+                </label>
+
+
+                <textarea
+                    id="message"
+                    name="new_message"
+                    maxlength="500"
+                    placeholder="Example: Flask service successfully deployed to EKS..."
+                    required
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                    id="submitButton"
+                >
+                    Publish Deployment Update
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h2>Team Activity</h2>
+
+                <span id="messageCount">
+                    {{ messages|length }} UPDATES
+                </span>
+
+            </div>
+
+
+            <div
+                class="messages"
+                id="messages"
+            >
+
+                {% if messages %}
+
+                    {% for message in messages %}
+
+                        <div class="message">
+
+                            <div class="message-top">
+
+                                <span class="message-label">
+                                    Deployment Update
+                                </span>
+
+                                <span class="message-time">
+                                    {{ message[2] if message|length > 2 else "Recorded" }}
+                                </span>
+
+                            </div>
+
+                            <div class="message-body">
+                                {{ message[1] if message|length > 2 else message[0] }}
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty-state" id="emptyState">
+                        No deployment updates yet.
+                        Add the first one.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <span>
+            <strong>CloudOps Hub</strong>
+            · Flask + MySQL + Docker + Kubernetes
+        </span>
+
+        <span>
+            Amazon EKS · ap-south-1
+        </span>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+    const form =
+        document.getElementById("messageForm");
+
+    const textarea =
+        document.getElementById("message");
+
+    const button =
+        document.getElementById("submitButton");
+
+    const messagesContainer =
+        document.getElementById("messages");
+
+    const messageCount =
+        document.getElementById("messageCount");
+
+
+    form.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const message =
+            textarea.value.trim();
+
+
+        if (!message) {
+            return;
+        }
+
+
+        button.disabled = true;
+        button.textContent = "Publishing...";
+
+
+        try {
+
+            const response =
+                await fetch("/submit", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded"
                     },
-                    success: function(response) {
-                        if (response && response.message) {
-                            // Append the new message to the list of messages
-                            $(".messages").append("<p>" + response.message + "</p>");
-                            // Clear the input field
-                            $("input[name='new_message']").val("");
-                        } else {
-                            console.error("Unexpected response format:", response);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error:", status, error);
-                    }
+
+                    body:
+                        new URLSearchParams({
+                            new_message: message
+                        })
+
                 });
-            });
-        });
-    </script>
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    "Unable to publish update."
+                );
+            }
+
+
+            const emptyState =
+                document.getElementById("emptyState");
+
+
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+
+            const messageElement =
+                document.createElement("div");
+
+            messageElement.className =
+                "message";
+
+
+            const top =
+                document.createElement("div");
+
+            top.className =
+                "message-top";
+
+
+            const label =
+                document.createElement("span");
+
+            label.className =
+                "message-label";
+
+            label.textContent =
+                "Deployment Update";
+
+
+            const time =
+                document.createElement("span");
+
+            time.className =
+                "message-time";
+
+            time.textContent =
+                "Just now";
+
+
+            top.appendChild(label);
+            top.appendChild(time);
+
+
+            const body =
+                document.createElement("div");
+
+            body.className =
+                "message-body";
+
+            body.textContent =
+                data.message;
+
+
+            messageElement.appendChild(top);
+            messageElement.appendChild(body);
+
+
+            messagesContainer.prepend(
+                messageElement
+            );
+
+
+            const count =
+                messagesContainer
+                    .querySelectorAll(".message")
+                    .length;
+
+
+            messageCount.textContent =
+                count + " UPDATES";
+
+
+            textarea.value = "";
+
+
+        } catch (error) {
+
+            alert(error.message);
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Publish Deployment Update";
+
+        }
+
+    });
+
+</script>
+
 </body>
 
 </html>
-
