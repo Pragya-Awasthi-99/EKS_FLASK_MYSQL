@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: two-tier-app
-          image: pragyaawasthi99/eks-flask-mysql-project:latest
+          image: pragyaawasthi99/eks-flask-mysql-project:v2
           env:
             - name: MYSQL_HOST
               value: mysql          # this is your mysql's service clusture IP, Make sure to change it with yours
